@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Hello, {{ user.first_name|default:user.username }} 🌿</h2>
+<div class="cards">
+  <div class="card"><strong>{{ total_plants }}</strong>Total Plants</div>
+  <div class="card"><strong>{{ due_today }}</strong>Due Today</div>
+  <div class="card"><strong>{{ overdue }}</strong>Overdue</div>
+</div>
+<div class="card">
+  <h3>Upcoming Care</h3>
+  <p>No upcoming care tasks yet. Plants and schedules arrive in the next phase.</p>
+</div>
+{% endblock %}
