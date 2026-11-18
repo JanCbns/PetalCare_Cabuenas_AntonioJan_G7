@@ -1,0 +1,26 @@
+from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
+from django.db import models
+
+
+class CustomUser(AbstractUser):
+    class Role(models.TextChoices):
+        PLANT_OWNER = "PLANT_OWNER", "Plant Owner"
+        ADMIN = "ADMIN", "Administrator"
+
+    email = models.EmailField("email address", unique=True)
+    role = models.CharField(max_length=20, choices=Role.choices,
+                            default=Role.PLANT_OWNER)
+    contact_number = models.CharField(
+        max_length=20, blank=True,
+        validators=[RegexValidator(r"^\+?[0-9\s\-]{7,20}$",
+                                   "Enter a valid contact number.")])
+    profile_photo = models.ImageField(upload_to="profile_photos/",
+                                      blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.role = self.Role.ADMIN
+        if self.role == self.Role.ADMIN:
+            self.is_staff = True
+        super().save(*args, **kwargs)
