@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}My Profile · PetalCare{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>My Profile</h2>
+  {% if user.profile_photo %}
+    <img class="avatar" src="{{ user.profile_photo.url }}" alt="Profile photo">
+  {% else %}
+    <div class="avatar"></div>
+  {% endif %}
+  <table>
+    <tr><th>Username</th><td>{{ user.username }}</td></tr>
+    <tr><th>Name</th><td>{{ user.get_full_name|default:"Not set" }}</td></tr>
+    <tr><th>Email</th><td>{{ user.email }}</td></tr>
+    <tr><th>Contact number</th><td>{{ user.contact_number|default:"Not set" }}</td></tr>
+    <tr><th>Role</th><td>{{ user.get_role_display }}</td></tr>
+    <tr><th>Member since</th><td>{{ user.date_joined|date:"M d, Y" }}</td></tr>
+  </table>
+  <p><a class="btn" href="{% url 'profile_edit' %}">Edit profile</a></p>
+</div>
+{% endblock %}
