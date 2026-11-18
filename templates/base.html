@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}PetalCare{% endblock %}</title>
+  <style>
+    body{font-family:system-ui,sans-serif;margin:0;background:#f4f8f3;color:#222}
+    nav{background:#2f6b3f;color:#fff;padding:.8rem 1.5rem;display:flex;gap:1rem;align-items:center}
+    nav a{color:#fff;text-decoration:none} nav .spacer{flex:1}
+    nav button{background:#fff;color:#2f6b3f;border:0;padding:.4rem .8rem;border-radius:6px;cursor:pointer}
+    main{max-width:900px;margin:1.5rem auto;padding:0 1rem}
+    .card{background:#fff;border-radius:10px;padding:1.2rem;box-shadow:0 1px 4px #0001}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1rem 0}
+    .cards strong{font-size:2rem;display:block}
+    .msg{padding:.7rem 1rem;border-radius:6px;margin-bottom:.6rem}
+    .msg.success{background:#d9f2df}.msg.error{background:#f8d7da}
+    form p{margin:.6rem 0} input,select{padding:.4rem;width:100%;max-width:340px;box-sizing:border-box}
+    .errorlist{color:#b00020;padding-left:1rem;margin:.2rem 0}
+    .btn{background:#2f6b3f;color:#fff;border:0;padding:.5rem 1rem;border-radius:6px;text-decoration:none;cursor:pointer}
+    .avatar{width:110px;height:110px;border-radius:50%;object-fit:cover;background:#ddd}
+    table{width:100%;border-collapse:collapse} td,th{padding:.4rem;text-align:left;border-bottom:1px solid #eee}
+  </style>
+</head>
+<body>
+<nav>
+  <strong>🌱 PetalCare</strong>
+  {% if user.is_authenticated %}
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    {% if user.role == "ADMIN" %}
+      <a href="{% url 'admin:index' %}">Django Admin</a>
+    {% else %}
+      <a href="#">My Plants</a>
+    {% endif %}
+    <a href="{% url 'profile' %}">Profile</a>
+    <span class="spacer"></span>
+    <span>{{ user.get_role_display }}: {{ user.username }}</span>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button>Logout</button></form>
+  {% else %}
+    <span class="spacer"></span>
+    <a href="{% url 'login' %}">Log in</a>
+    <a href="{% url 'signup' %}">Sign up</a>
+  {% endif %}
+</nav>
+<main>
+  {% for message in messages %}
+    <div class="msg {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

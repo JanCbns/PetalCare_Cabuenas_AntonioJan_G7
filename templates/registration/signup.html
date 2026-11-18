@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Sign up · PetalCare{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Create your PetalCare account</h2>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Create account</button>
+  </form>
+  <p>Already registered? <a href="{% url 'login' %}">Log in</a></p>
+</div>
+{% endblock %}
